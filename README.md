@@ -1,2 +1,2 @@
-# IS-Project
+# ISProject
 Intelligent System Project
