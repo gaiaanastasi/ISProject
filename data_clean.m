@@ -4,7 +4,7 @@ clc
 format compact
 
 %% Load the dataset
-dataset = load('dataset.mat');
+dataset = load('data/dataset.mat');
 dataset = table2array(dataset.dataset);
 
 %% Remove infinite values
@@ -117,3 +117,7 @@ figure("Name", "Samples for valence after balancing");
 bar(samples_valence);
 title("Samples for valence after balancing");
 fprintf("Valence data balanced\n");
+
+
+%% Save balanced dataset
+    save('data/clean_dataset.mat','clean_dataset');
