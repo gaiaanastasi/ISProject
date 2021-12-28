@@ -1,4 +1,4 @@
-%% Clean
+%% Cleanarousal
 clear
 close all
 clc
@@ -29,7 +29,7 @@ arousal_level = dataset(:,1);
 valence_level = dataset(:,2);
 
 
-%getting arousal and valance levels
+%getting arousal and valence levels
 arousal_level  = clean_dataset(:,1);
 valence_level = clean_dataset(:,2);
 
@@ -130,11 +130,11 @@ idxTesting = test(cv);
 
 x_train = features(idxTraining, :);
 y_train_arousal = target_arousal(idxTraining, :);
-y_train_valance = target_valence(idxTraining, :);
+y_train_valence = target_valence(idxTraining, :);
 
 x_test = features(idxTesting, :);
 y_test_arousal = target_arousal(idxTesting, :);
-y_test_valance = target_valence(idxTesting, :);
+y_test_valence = target_valence(idxTesting, :);
 
 sequentialfs_rep = 5;
 
@@ -186,21 +186,21 @@ best_arousal_testing.y_test = y_test_arousal';
 save("data/testing_arousal.mat", "best_arousal_testing");
 fprintf("Arousal features saved\n");
 
-%% Features extraction for Valance
-features_valance = [zeros(1,54); 1:54]';
+%% Features extraction for valence
+features_valence = [zeros(1,54); 1:54]';
 
 for i = 1:sequentialfs_rep
     fprintf("Iteration %i\n", i);
     %K-fold cross validation will be used to train and test the neural
-    c = cvpartition(y_train_valance, 'k', 10);
+    c = cvpartition(y_train_valence, 'k', 10);
     option = statset('display','iter','useParallel',true);
-    inmodel = sequentialfs(@myfun, x_train, y_train_valance, 'cv', c, 'opt', option, 'nFeatures', 5);
+    inmodel = sequentialfs(@myfun, x_train, y_train_valence, 'cv', c, 'opt', option, 'nFeatures', 5);
     
     % Fetch useful indexes from result of latter sequentialfs
    p=1; 
    for val = inmodel
         if val == 1
-            features_valance(p, 1) = features_valance(p, 1) + 1;
+            features_valence(p, 1) = features_valence(p, 1) + 1;
             fprintf("Added %d\n",p);
         end
         p = p+1;
@@ -211,27 +211,27 @@ end
     
 
 fprintf("\n");
-fprintf("VALANCE:"); 
-%disp(features_valance);
+fprintf("valence:"); 
+%disp(features_valence);
 fprintf("\n");
 
 
-disp(features_valance);
+disp(features_valence);
 fprintf("Sorting features");
-features_valance = sortrows(features_valance, 1, 'descend');
-disp(features_valance);
+features_valence = sortrows(features_valence, 1, 'descend');
+disp(features_valence);
 
-%Getting the 10 best valance features
-valance_best = features_valance(1:10, 2);
-best_valance_training.x_train = x_train(:, valance_best);
-best_valance_training.y_train = y_train_valance';
+%Getting the 10 best valence features
+valence_best = features_valence(1:10, 2);
+best_valence_training.x_train = x_train(:, valence_best);
+best_valence_training.y_train = y_train_valence';
 %Save struct
-save("data/training_valance.mat", "best_valance_training");
+save("data/training_valence.mat", "best_valence_training");
 
-best_valance_testing.x_test = x_test(:, valance_best);
-best_valance_testing.y_test = y_test_valance';
-save("data/testing_valance.mat", "best_valance_testing");
-fprintf("valance features saved\n");
+best_valence_testing.x_test = x_test(:, valence_best);
+best_valence_testing.y_test = y_test_valence';
+save("data/testing_valence.mat", "best_valence_testing");
+fprintf("valence features saved\n");
 
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)
