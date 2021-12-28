@@ -208,11 +208,11 @@ for i = 1:sequentialfs_rep
 
 end
     
-    %fprintf("Feature %i\n", features_arousal);
+    
 
 fprintf("\n");
 fprintf("VALANCE:"); 
-%disp(features_arousal);
+%disp(features_valance);
 fprintf("\n");
 
 
@@ -221,17 +221,17 @@ fprintf("Sorting features");
 features_valance = sortrows(features_valance, 1, 'descend');
 disp(features_valance);
 
-%Getting the 10 best arousal features
+%Getting the 10 best valance features
 valance_best = features_valance(1:10, 2);
 best_valance_training.x_train = x_train(:, valance_best);
 best_valance_training.y_train = y_train_valance';
 %Save struct
-save("data/training_valance.mat", "best_arousal_training");
+save("data/training_valance.mat", "best_valance_training");
 
-best_arousal_testing.x_test = x_test(:, arousal_best);
-best_arousal_testing.y_test = y_test_arousal';
-save("data/testing_arousal.mat", "best_arousal_testing");
-fprintf("Arousal features saved\n");
+best_valance_testing.x_test = x_test(:, valance_best);
+best_valance_testing.y_test = y_test_valance';
+save("data/testing_valance.mat", "best_valance_testing");
+fprintf("valance features saved\n");
 
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)
