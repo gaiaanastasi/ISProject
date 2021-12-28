@@ -119,7 +119,7 @@ bar(samples_valence);
 title("Samples for valence after balancing");
 fprintf("Valence data balanced\n");
 
-%% Features extraction
+%% Features selection
 features = clean_dataset(:,3:end);
 target_arousal = clean_dataset(:,1);
 target_valence = clean_dataset(:,2);
@@ -138,7 +138,7 @@ y_test_valance = target_valence(idxTesting, :);
 
 sequentialfs_rep = 5;
 
-% Arousal
+%% Features extraction for Arousal
 features_arousal = [zeros(1,54); 1:54]';
 
 for i = 1:sequentialfs_rep
@@ -168,6 +168,70 @@ fprintf("*** AROUSAL: ");
 %disp(features_arousal);
 fprintf("\n");
 
+
+disp(features_arousal);
+fprintf("Sorting features");
+features_arousal = sortrows(features_arousal, 1, 'descend');
+disp(features_arousal);
+
+%Getting the 10 best arousal features
+arousal_best = features_arousal(1:10, 2);
+best_arousal_training.x_train = x_train(:, arousal_best);
+best_arousal_training.y_train = y_train_arousal';
+%Save struct
+save("data/training_arousal.mat", "best_arousal_training");
+
+best_arousal_testing.x_test = x_test(:, arousal_best);
+best_arousal_testing.y_test = y_test_arousal';
+save("data/testing_arousal.mat", "best_arousal_testing");
+fprintf("Arousal features saved\n");
+
+%% Features extraction for Valance
+features_valance = [zeros(1,54); 1:54]';
+
+for i = 1:sequentialfs_rep
+    fprintf("Iteration %i\n", i);
+    %K-fold cross validation will be used to train and test the neural
+    c = cvpartition(y_train_valance, 'k', 10);
+    option = statset('display','iter','useParallel',true);
+    inmodel = sequentialfs(@myfun, x_train, y_train_valance, 'cv', c, 'opt', option, 'nFeatures', 5);
+    
+    % Fetch useful indexes from result of latter sequentialfs
+   p=1; 
+   for val = inmodel
+        if val == 1
+            features_valance(p, 1) = features_valance(p, 1) + 1;
+            fprintf("Added %d\n",p);
+        end
+        p = p+1;
+    end
+
+end
+    
+    
+
+fprintf("\n");
+fprintf("VALANCE:"); 
+%disp(features_valance);
+fprintf("\n");
+
+
+disp(features_valance);
+fprintf("Sorting features");
+features_valance = sortrows(features_valance, 1, 'descend');
+disp(features_valance);
+
+%Getting the 10 best valance features
+valance_best = features_valance(1:10, 2);
+best_valance_training.x_train = x_train(:, valance_best);
+best_valance_training.y_train = y_train_valance';
+%Save struct
+save("data/training_valance.mat", "best_valance_training");
+
+best_valance_testing.x_test = x_test(:, valance_best);
+best_valance_testing.y_test = y_test_valance';
+save("data/testing_valance.mat", "best_valance_testing");
+fprintf("valance features saved\n");
 
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)

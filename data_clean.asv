@@ -6,7 +6,6 @@ format compact
 
 %% Load the dataset
 dataset = load('data/dataset.mat');
-%{
 dataset = table2array(dataset.dataset);
 
 %% Remove infinite values
@@ -120,6 +119,131 @@ bar(samples_valence);
 title("Samples for valence after balancing");
 fprintf("Valence data balanced\n");
 
+%% Features selection
+features = clean_dataset(:,3:end);
+target_arousal = clean_dataset(:,1);
+target_valence = clean_dataset(:,2);
+
+cv = cvpartition(target_arousal, 'holdout', 0.3);
+idxTraining = training(cv);
+idxTesting = test(cv);
+
+x_train = features(idxTraining, :);
+y_train_arousal = target_arousal(idxTraining, :);
+y_train_valance = target_valence(idxTraining, :);
+
+x_test = features(idxTesting, :);
+y_test_arousal = target_arousal(idxTesting, :);
+y_test_valance = target_valence(idxTesting, :);
+
+sequentialfs_rep = 5;
+
+%% Features extraction for Arousal
+features_arousal = [zeros(1,54); 1:54]';
+
+for i = 1:sequentialfs_rep
+    fprintf("Iteration %i\n", i);
+    %K-fold cross validation will be used to train and test the neural
+    %network that lies in the fun2 function
+    c = cvpartition(y_train_arousal, 'k', 10);
+    option = statset('display','iter','useParallel',true);
+    inmodel = sequentialfs(@myfun, x_train, y_train_arousal, 'cv', c, 'opt', option, 'nFeatures', 5);
+    
+    % Fetch useful indexes from result of latter sequentialfs
+   p=1; 
+   for val = inmodel
+        if val == 1
+            features_arousal(p, 1) = features_arousal(p, 1) + 1;
+            fprintf("Added %d\n",p);
+        end
+        p = p+1;
+    end
+
+end
+    
+    %fprintf("Feature %i\n", features_arousal);
+
+fprintf("\n");
+fprintf("*** AROUSAL: "); 
+%disp(features_arousal);
+fprintf("\n");
+
+
+disp(features_arousal);
+fprintf("Sorting features");
+features_arousal = sortrows(features_arousal, 1, 'descend');
+disp(features_arousal);
+
+%Getting the 10 best arousal features
+arousal_best = features_arousal(1:10, 2);
+best_arousal_training.x_train = x_train(:, arousal_best);
+best_arousal_training.y_train = y_train_arousal';
+%Save struct
+save("data/training_arousal.mat", "best_arousal_training");
+
+best_arousal_testing.x_test = x_test(:, arousal_best);
+best_arousal_testing.y_test = y_test_arousal';
+save("data/testing_arousal.mat", "best_arousal_testing");
+fprintf("Arousal features saved\n");
+
+%% Features extraction for Valance
+features_valance = [zeros(1,54); 1:54]';
+
+for i = 1:sequentialfs_rep
+    fprintf("Iteration %i\n", i);
+    %K-fold cross validation will be used to train and test the neural
+    c = cvpartition(y_train_valance, 'k', 10);
+    option = statset('display','iter','useParallel',true);
+    inmodel = sequentialfs(@myfun, x_train, y_train_valance, 'cv', c, 'opt', option, 'nFeatures', 5);
+    
+    % Fetch useful indexes from result of latter sequentialfs
+   p=1; 
+   for val = inmodel
+        if val == 1
+            features_valance(p, 1) = features_valance(p, 1) + 1;
+            fprintf("Added %d\n",p);
+        end
+        p = p+1;
+    end
+
+end
+    
+    %fprintf("Feature %i\n", features_arousal);
+
+fprintf("\n");
+fprintf("VALANCE:"); 
+%disp(features_arousal);
+fprintf("\n");
+
+
+disp(features_valance);
+fprintf("Sorting features");
+features_valance = sortrows(features_valance, 1, 'descend');
+disp(features_valance);
+
+%Getting the 10 best arousal features
+valance_best = features_valance(1:10, 2);
+best_valance_training.x_train = x_train(:, valance_best);
+best_valance_training.y_train = y_train_valance';
+%Save struct
+save("data/training_valance.mat", "best_arousal_training");
+
+best_arousal_testing.x_test = x_test(:, arousal_best);
+best_arousal_testing.y_test = y_test_arousal';
+save("data/testing_arousal.mat", "best_arousal_testing");
+fprintf("Arousal features saved\n");
+
+%% Function for sequentialfs
+function err = myfun(x_train, t_train, x_test, t_test)
+    %~1000 samples for training
+    net = fitnet(60);
+    %net.trainParam.showWindow=0;
+    xx = x_train';
+    tt = t_train';
+    net = train(net, xx, tt);
+    y=net(x_test'); 
+    err = perform(net,t_test',y);
+end
 
 %% Save balanced dataset
-    save('data/clean_dataset.mat','clean_dataset');
+   % save('data/clean_dataset.mat','clean_dataset');
