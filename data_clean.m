@@ -48,9 +48,9 @@ fprintf("Data are unbalanced\n");
 [~, max_arousal] = max(sample_arousal);
 
 % plot the graph
-%figure("Name", "Sample for valence before balancing");
-%bar(sample_valence);
-%title("Sample for valence before balancing");
+figure("Name", "Sample for valence before balancing");
+bar(sample_valence);
+title("Sample for valence before balancing");
 
 fprintf("Data are unbalanced\n");
 
@@ -223,21 +223,23 @@ disp(features_valence);
 
 %Getting the 10 best valence features
 valence_best = features_valence(1:10, 2);
-best_valence_training.x_train = x_train(:, valence_best);
-best_valence_training.y_train = y_train_valence';
+best_valance_training.x_train = x_train(:, valence_best);
+best_valance_training.y_train = y_train_valence';
 %Save struct
-save("data/training_valence.mat", "best_valence_training");
+save("data/training_valence.mat", "best_valance_training");
 
-best_valence_testing.x_test = x_test(:, valence_best);
-best_valence_testing.y_test = y_test_valence';
-save("data/testing_valence.mat", "best_valence_testing");
+best_valance_testing.x_test = x_test(:, valence_best);
+best_valance_testing.y_test = y_test_valence';
+save("data/testing_valence.mat", "best_valance_testing");
 fprintf("valence features saved\n");
 
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)
     %~1000 samples for training
     net = fitnet(60);
-    %net.trainParam.showWindow=0;
+    net.trainParam.showWindow=0;
+    net.trainParam.showCommandLine=1;
+    net.trainParam.epochs =100;
     xx = x_train';
     tt = t_train';
     net = train(net, xx, tt);
