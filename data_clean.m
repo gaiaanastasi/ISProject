@@ -187,6 +187,7 @@ save("data/testing_arousal.mat", "best_arousal_testing");
 fprintf("Arousal features saved\n");
 
 %% Features extraction for valence
+%{
 features_valence = [zeros(1,54); 1:54]';
 
 for i = 1:sequentialfs_rep
@@ -233,7 +234,7 @@ best_valance_testing.y_test = y_test_valence';
 save("data/testing_valence.mat", "best_valance_testing");
 fprintf("valence features saved\n");
 
-
+%}
 
 %% Save best-3 features arousal dataset
 arousal_best3 = features_arousal(1:3, 2);
@@ -251,9 +252,8 @@ fprintf("Best-3 arousal features saved\n");
 function err = myfun(x_train, t_train, x_test, t_test)
     %~1000 samples for training
     net = fitnet(60);
-    net.trainParam.showWindow=0;
-    net.trainParam.showCommandLine=1;
-    net.trainParam.epochs =100;
+    %net.trainParam.showWindow=0;
+    %net.trainParam.showCommandLine=1;
     xx = x_train';
     tt = t_train';
     net = train(net, xx, tt);

@@ -5,7 +5,7 @@ clc
 format compact
 
 %% Load dataset
-
+%{
 best3 = load("data/best3.mat");
 
 x_train = best3.best3.x_train;
@@ -14,42 +14,45 @@ x_test = best3.best3.x_test;
 y_test = best3.best3.y_test.';
 best_features = best3.best3.best_features;
 y_values = best3.best3.y_values;
-
+%}
 %Retrive the features name from the entire dataset
 dataset = load("data\dataset.mat");
 %dataset_clean = table2array(dataset);
 features_names = dataset.dataset.Properties.VariableNames(5:58);
 best3_features_names = features_names(best_features);
-%{
-fuzzyData = load("fuzzyData.mat");
+fuzzyData = load("data/biomedical_signals/fuzzyData.mat");
+
 x_train = fuzzyData.fuzzyData.x_train_arousal;
 y_train = fuzzyData.fuzzyData.y_train_arousal;
+
 x_test = fuzzyData.fuzzyData.x_test_arousal;
 y_test = fuzzyData.fuzzyData.y_test_arousal;
+
 best_features = fuzzyData.fuzzyData.best_features;
+
 y_values = fuzzyData.fuzzyData.y_values;
-%}
-x_27= x_train(:,1);
-x_34=x_train(:,2);
-x_9=x_train(:,3);
+x_27= x_train(1,:);
+x_34=x_train(2,:);
+x_9=x_train(3,:);
 
 %Plot histogram
 figure
 t = tiledlayout(1,3);
 nexttile
-histogram(x_27,'BinWidth',0.5, 'BinLimits',[-1 1]);
+histogram(x_27,'BinWidth',0.5, 'BinLimits',[-4,10]);
 title('Histogram of ECG 18');
 nexttile
 histogram(x_34, 'BinWidth',0.1, 'BinLimits',[0,2]);
 title('Histogram of EEC 10');
 nexttile
-histogram(x_9, 'BinWidth',0.005, 'BinLimits',[0 0.1]);
+histogram(x_9, 'BinWidth',0.005, 'BinLimits',[-0.1,0.1]);
 title('Histogram of GSR 1');
+
 
 
 %Index of samples for each output
 index1 = find(y_values == 1);
-index2 = find(y_values == y_values(2)); %The value 7/3 gave some problems to be recognized
+index2 = find(y_values == 7/3); %The value 7/3 gave some problems to be recognized
 index3 = find(y_values == 11/3);
 index4 = find(y_values == 5);
 index5 = find(y_values == 19/3);
@@ -58,21 +61,13 @@ index7 = find(y_values == 9);
 
 % Plot Histogram of features for a specific subset of outputs
 figure
-y_lim = 5;
+y_lim = 15;
 t = tiledlayout(1,3);
 low_ind = [index1 index2];
 mid_ind = [index3 index4 index5];
 high_ind = [index6 index7];
 nexttile
-histogram(x_27(low_ind), 'BinWidth',0.5, 'BinLimits',[-0.5 0]);
+histogram(x_27(low_ind), 'BinWidth',0.5);
 yline(y_lim, '--r');
 title('Histogram of feature 27 when y: low [1-3)');
-nexttile
-histogram(x_27(mid_ind), 'BinWidth',0.5);
-yline(y_lim, '--r');
-title('Histogram of feature 27 when y: mid [3-7]');
-nexttile
-histogram(x_27(high_ind), 'BinWidth',0.5);
-yline(y_lim, '--r');
-title('Histogram of feature 27 when y: (7-9]');
 
