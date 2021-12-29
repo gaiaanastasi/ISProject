@@ -29,21 +29,22 @@ y_test = fuzzyData.fuzzyData.y_test_arousal;
 best_features = fuzzyData.fuzzyData.best_features;
 y_values = fuzzyData.fuzzyData.y_values;
 %}
-x_27= x_train(:,1);
-x_34=x_train(:,2);
-x_9=x_train(:,3);
+x_13= x_train(:,1);
+x_27=x_train(:,2);
+x_12=x_train(:,3);
+
 
 %Plot histogram
 figure
 t = tiledlayout(1,3);
 nexttile
-histogram(x_27,'BinWidth',0.5, 'BinLimits',[-1 1]);
+histogram(x_13,'BinWidth',0.5, 'BinLimits',[-1 1]);
 title('Histogram of ECG 18');
 nexttile
-histogram(x_34, 'BinWidth',0.1, 'BinLimits',[0,2]);
+histogram(x_27, 'BinWidth',0.1, 'BinLimits',[-0.5 0.5]);
 title('Histogram of EEC 10');
 nexttile
-histogram(x_9, 'BinWidth',0.005, 'BinLimits',[0 0.1]);
+histogram(x_12, 'BinWidth',0.005, 'BinLimits',[0 0.1]);
 title('Histogram of GSR 1');
 
 
@@ -57,22 +58,3 @@ index6 = find(y_values == 23/3);
 index7 = find(y_values == 9);
 
 % Plot Histogram of features for a specific subset of outputs
-figure
-y_lim = 5;
-t = tiledlayout(1,3);
-low_ind = [index1 index2];
-mid_ind = [index3 index4 index5];
-high_ind = [index6 index7];
-nexttile
-histogram(x_27(low_ind), 'BinWidth',0.5, 'BinLimits',[-0.5 0]);
-yline(y_lim, '--r');
-title('Histogram of feature 27 when y: low [1-3)');
-nexttile
-histogram(x_27(mid_ind), 'BinWidth',0.5);
-yline(y_lim, '--r');
-title('Histogram of feature 27 when y: mid [3-7]');
-nexttile
-histogram(x_27(high_ind), 'BinWidth',0.5);
-yline(y_lim, '--r');
-title('Histogram of feature 27 when y: (7-9]');
-
