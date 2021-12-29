@@ -25,7 +25,7 @@ y_test_valence = test_valence.best_valance_testing.y_test'.';
 
 fprintf("Valence features loaded\n");
 
-%% MLP for Arousa
+%% MLP for Arousal
 % Creation of MLP
 hiddenLayerSize_arousal = 30;
 mlp_arousal = fitnet(hiddenLayerSize_arousal);
@@ -33,7 +33,7 @@ mlp_arousal.divideParam.trainRatio = 0.7;
 mlp_arousal.divideParam.testRatio = 0.1;
 mlp_arousal.divideParam.valRatio = 0.2;
 mlp_arousal.trainParam.showCommandLine=1;
-mlp_arousal.trainParam.showWindow=0;
+%mlp_arousal.trainParam.showWindow=0;
 mlp_arousal.trainParam.epochs =110;
 %Training
 [mlp_arousal, tr] = train(mlp_arousal, x_train_arousal, y_train_arousal);
@@ -54,7 +54,7 @@ mlp_valence.divideParam.trainRatio = 0.7;
 mlp_valence.divideParam.testRatio = 0.1;
 mlp_valence.divideParam.valRatio = 0.2;
 mlp_valence.trainParam.showCommandLine=1;
-mlp_valence.trainParam.showWindow=0;
+%mlp_valence.trainParam.showWindow=0;
 mlp_valence.trainParam.epochs =110;
 %Training
 [mlp_valence, tr_v] = train(mlp_valence, x_train_valence, y_train_valence);
@@ -65,7 +65,7 @@ plotperform(tr_v);
 test_output_valence = mlp_valence(x_test_valence);
 % Plot regression
 figure(4)
-plotregression(y_test_valence, test_output_valence, " valence ");
+plotregression(y_test_valence, test_output_valence, " Valence ");
 
 %% RBFN for Arousal
 %Creation of RBFN

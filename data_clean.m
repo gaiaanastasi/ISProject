@@ -233,6 +233,20 @@ best_valance_testing.y_test = y_test_valence';
 save("data/testing_valence.mat", "best_valance_testing");
 fprintf("valence features saved\n");
 
+
+
+%% Save best-3 features arousal dataset
+arousal_best3 = features_arousal(1:3, 2);
+best3.x_train = x_train(:, arousal_best3);
+best3.y_train = y_train_arousal';
+best3.x_test = x_test(:, arousal_best3);
+best3.y_test = y_test_arousal';
+best3.best_features=arousal_best3;
+best3.y_values= possible_values;
+%Save struct
+save("data/best3.mat", "best3");
+fprintf("Best-3 arousal features saved\n");
+
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)
     %~1000 samples for training
@@ -246,6 +260,3 @@ function err = myfun(x_train, t_train, x_test, t_test)
     y=net(x_test'); 
     err = perform(net,t_test',y);
 end
-
-%% Save balanced dataset
-   % save('data/clean_dataset.mat','clean_dataset');
