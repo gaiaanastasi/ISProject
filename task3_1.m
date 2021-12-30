@@ -47,6 +47,7 @@ figure(2)
 plotregression(y_test_arousal, test_output_arousal, " Arousal ");
 
 %% MLP for Valence
+%{
 %Creation of MLP
 hiddenLayerSize_valence = 35;
 mlp_valence = fitnet(hiddenLayerSize_valence);
@@ -66,7 +67,7 @@ test_output_valence = mlp_valence(x_test_valence);
 % Plot regression
 figure(4)
 plotregression(y_test_valence, test_output_valence, " Valence ");
-
+%}
 %% RBFN for Arousal
 %Creation of RBFN
 goal_ar = 0;
@@ -81,6 +82,7 @@ figure(5)
 plotregression(y_test_arousal, test_output_arousal_rbf, 'Arousal:');
 
 %% RBFN for Valence
+%{
 %Creation of RBFN
 goal_vl = 0;
 spread_vl = 1;
@@ -92,5 +94,5 @@ test_output_valence_rbf = rbf_valence(x_test_valence);
 %Plot regression
 figure(6)
 plotregression(y_test_valence, test_output_valence_rbf, 'Valence:');
-
+%}
 

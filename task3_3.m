@@ -41,10 +41,10 @@ nexttile
 histogram(x_13,'BinWidth',0.5, 'BinLimits',[-1 1]);
 title('Histogram of ECG 18');
 nexttile
-histogram(x_27, 'BinWidth',0.1, 'BinLimits',[-0.5 0.5]);
+histogram(x_27, 'BinWidth',0.5, 'BinLimits',[-2 2]);
 title('Histogram of EEC 10');
 nexttile
-histogram(x_12, 'BinWidth',0.005, 'BinLimits',[0 0.1]);
+histogram(x_12, 'BinWidth',0.5, 'BinLimits',[-1 1]);
 title('Histogram of GSR 1');
 
 
