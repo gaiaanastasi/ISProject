@@ -1,4 +1,4 @@
-%% Cleanarousal
+%% Clean
 clear
 close all
 clc
@@ -138,27 +138,25 @@ y_test_valence = target_valence(idxTesting, :);
 
 sequentialfs_rep = 5;
 
+
 %% Features extraction for Arousal
 features_arousal = [zeros(1,54); 1:54]';
-
+counter_feat_sel_arousal = zeros(54,1)';
 for i = 1:sequentialfs_rep
     fprintf("Iteration %i\n", i);
     %K-fold cross validation will be used to train and test the neural
     %network that lies in the fun2 function
     c = cvpartition(y_train_arousal, 'k', 10);
     option = statset('display','iter','useParallel',true);
-    inmodel = sequentialfs(@myfun, x_train, y_train_arousal, 'cv', c, 'opt', option, 'nFeatures', 5);
+    [features_selected_for_arousal, ~]  = sequentialfs(@myfun, x_train, y_train_arousal, 'cv', c, 'opt', option, 'nFeatures', 5);
     
     % Fetch useful indexes from result of latter sequentialfs
    p=1; 
-   for val = inmodel
-        if val == 1
-            features_arousal(p, 1) = features_arousal(p, 1) + 1;
-            fprintf("Added %d\n",p);
+   for j = 1:54
+        if features_selected_for_arousal(j) == 1
+            counter_feat_sel_arousal(j) = counter_feat_sel_arousal(j) + 1;
         end
-        p = p+1;
     end
-
 end
     
     %fprintf("Feature %i\n", features_arousal);
@@ -176,6 +174,17 @@ disp(features_arousal);
 
 %Getting the 10 best arousal features
 arousal_best = features_arousal(1:10, 2);
+%{
+arousal_best = zeros(10, 1)';
+for i = 1:10
+    % I find the maximum
+    [~,arousal_best(i)] = max(counter_feat_sel_arousal);
+    fprintf(" Il max %f è in posizione (features) %i", counter_feat_sel_arousal(arousal_best(i)), arousal_best(i)); 
+    % I set the maximum to zero, thus at the next iteration the second
+    % maximum value will be selected
+    counter_feat_sel_arousal(arousal_best(i)) = 0;
+end
+%}
 best_arousal_training.x_train = x_train(:, arousal_best);
 best_arousal_training.y_train = y_train_arousal';
 %Save struct
@@ -251,7 +260,7 @@ fprintf("Best-3 arousal features saved\n");
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)
     %~1000 samples for training
-    net = fitnet(60);
+    net = fitnet(40);
     %net.trainParam.showWindow=0;
     %net.trainParam.showCommandLine=1;
     xx = x_train';
