@@ -52,9 +52,9 @@ min_11 = min(x_11);
 min_13 = min(x_13);
 
 fprintf(" --- RANGES FOR UNIVERSE OF DISCOURSE ---\n");
-fprintf("  Feature 24 -> Max:%f Min:%f\n", max_27, min_27);
-fprintf("  Feature 27 -> Max:%f Min:%f\n", max_11, min_11);
-fprintf("  Feature 37 -> Max:%f Min:%f\n", max_13, min_13);
+fprintf("  Feature 27 -> Max:%f Min:%f\n", max_27, min_27);
+fprintf("  Feature 11 -> Max:%f Min:%f\n", max_11, min_11);
+fprintf("  Feature 13 -> Max:%f Min:%f\n", max_13, min_13);
 
 
 %Index of samples for each output
