@@ -146,5 +146,5 @@ x_test_norm = normalize(best3.best3.x_test);
 %y_test_norm = normalize(best3.best3.y_test, [1 9]);
 
 output = evalfis(fis,x_test_norm);
-figure(5)
+
 plotregression(y_test, output);
