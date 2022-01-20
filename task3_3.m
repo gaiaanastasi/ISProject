@@ -59,7 +59,7 @@ fprintf("  Feature 13 -> Max:%f Min:%f\n", max_13, min_13);
 
 %% Index of samples for each output
 index1 = find(y_train == y_values(1));
-index2 = find(y_train == y_values(2)); %The value 7/3 gave some problems to be recognized
+index2 = find(y_train == y_values(2)); 
 index3 = find(y_train == y_values(3));
 index4 = find(y_train == y_values(4));
 index5 = find(y_train == y_values(5));
@@ -140,11 +140,7 @@ title('Scatterplot of feature 11 and feature 13');
 
 %% Evaluation of Memdani
 fis = readfis('Memdani');
-
-
 x_test_norm = normalize(best3.best3.x_test);
-%y_test_norm = normalize(best3.best3.y_test, [1 9]);
-
-output = evalfis(fis,x_test_norm);
+output = evalfis(fis, x_test_norm);
 figure(5)
 plotregression(y_test, output);
