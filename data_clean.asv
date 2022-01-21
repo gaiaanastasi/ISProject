@@ -236,9 +236,9 @@ fprintf("valence features saved\n");
 
 %% Save best-3 features arousal dataset
 arousal_best3 = features_arousal(1:3, 2);
-best3.x_train = normalize(x_train(:, arousal_best3));
+best3.x_train = x_train(:, arousal_best3);
 best3.y_train = y_train_arousal';
-best3.x_test = normalize(x_test(:, arousal_best3));
+best3.x_test = x_test(:, arousal_best3);
 best3.y_test = y_test_arousal';
 best3.best_features=arousal_best3;
 best3.y_values= possible_values;

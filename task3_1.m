@@ -8,11 +8,11 @@ format compact
 
 test_arousal = load('data/testing_arousal.mat');
 train_arousal = load('data/training_arousal.mat');
-x_train_arousal_nn = train_arousal.best_arousal_training.x_train';
-x_train_arousal = normalize(x_train_arousal_nn);
+x_train_arousal = train_arousal.best_arousal_training.x_train';
+%x_train_arousal = normalize(x_train_arousal_nn);
 y_train_arousal = train_arousal.best_arousal_training.y_train'.';
-x_test_arousal_nn = test_arousal.best_arousal_testing.x_test';
-x_test_arousal = normalize(x_test_arousal_nn);
+x_test_arousal = test_arousal.best_arousal_testing.x_test';
+%x_test_arousal = normalize(x_test_arousal_nn);
 y_test_arousal = test_arousal.best_arousal_testing.y_test'.';
 
 fprintf("Arousal features loaded\n");
@@ -20,11 +20,11 @@ fprintf("Arousal features loaded\n");
 
 test_valence = load('data/testing_valence.mat');
 train_valence = load('data/training_valence.mat');
-x_train_valence_nn = train_valence.best_valance_training.x_train';
-x_train_valence = normalize(x_train_valence_nn)
+x_train_valence = train_valence.best_valance_training.x_train';
+%x_train_valence = normalize(x_train_valence_nn)
 y_train_valence = train_valence.best_valance_training.y_train'.';
-x_test_valence_nn = test_valence.best_valance_testing.x_test';
-x_test_valence = normalize(x_test_valence_nn)
+x_test_valence = test_valence.best_valance_testing.x_test';
+%x_test_valence = normalize(x_test_valence_nn)
 y_test_valence = test_valence.best_valance_testing.y_test'.';
 
 fprintf("Valence features loaded\n");
@@ -51,7 +51,7 @@ figure(2)
 plotregression(y_test_arousal, test_output_arousal, " Arousal ");
 
 %% MLP for Valence
-%{
+
 %Creation of MLP
 hiddenLayerSize_valence = 35;
 mlp_valence = fitnet(hiddenLayerSize_valence);
@@ -71,7 +71,7 @@ test_output_valence = mlp_valence(x_test_valence);
 % Plot regression
 figure(4)
 plotregression(y_test_valence, test_output_valence, " Valence ");
-%}
+
 %% RBFN for Arousal
 %Creation of RBFN
 goal_ar = 0;
@@ -86,7 +86,7 @@ figure(5)
 plotregression(y_test_arousal, test_output_arousal_rbf, 'Arousal:');
 
 %% RBFN for Valence
-%{
+
 %Creation of RBFN
 goal_vl = 0;
 spread_vl = 1;
@@ -98,5 +98,5 @@ test_output_valence_rbf = rbf_valence(x_test_valence);
 %Plot regression
 figure(6)
 plotregression(y_test_valence, test_output_valence_rbf, 'Valence:');
-%}
+
 
