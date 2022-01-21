@@ -9,7 +9,7 @@ format compact
 best3 = load("data/best3.mat");
 
 x_train = best3.best3.x_train;
-x_train_norm = normalize(x_train);
+%x_train_norm = normalize(x_train);
 y_train = best3.best3.y_train;
 x_test = best3.best3.x_test;
 y_test = best3.best3.y_test;
@@ -22,9 +22,9 @@ dataset = load("data/dataset.mat");
 features_names = dataset.dataset.Properties.VariableNames(5:58);
 best3_features_names = features_names(best_features);
 
-x_27= x_train_norm(:,1);
-x_11=x_train_norm(:,2);
-x_13=x_train_norm(:,3);
+x_27= x_train(:,1);
+x_11=x_train(:,2);
+x_13=x_train(:,3);
 
 
 
@@ -140,7 +140,7 @@ title('Scatterplot of feature 11 and feature 13');
 
 %% Evaluation of Memdani
 fis = readfis('Memdani');
-x_test_norm = normalize(best3.best3.x_test);
-output = evalfis(fis, x_test_norm);
+%x_test_norm = normalize(best3.best3.x_test);
+output = evalfis(fis, x_test);
 figure(5)
 plotregression(y_test, output);
