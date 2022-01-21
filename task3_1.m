@@ -9,10 +9,8 @@ format compact
 test_arousal = load('data/testing_arousal.mat');
 train_arousal = load('data/training_arousal.mat');
 x_train_arousal = train_arousal.best_arousal_training.x_train';
-%x_train_arousal = normalize(x_train_arousal_nn);
 y_train_arousal = train_arousal.best_arousal_training.y_train'.';
 x_test_arousal = test_arousal.best_arousal_testing.x_test';
-%x_test_arousal = normalize(x_test_arousal_nn);
 y_test_arousal = test_arousal.best_arousal_testing.y_test'.';
 
 fprintf("Arousal features loaded\n");
@@ -21,10 +19,8 @@ fprintf("Arousal features loaded\n");
 test_valence = load('data/testing_valence.mat');
 train_valence = load('data/training_valence.mat');
 x_train_valence = train_valence.best_valance_training.x_train';
-%x_train_valence = normalize(x_train_valence_nn)
 y_train_valence = train_valence.best_valance_training.y_train'.';
 x_test_valence = test_valence.best_valance_testing.x_test';
-%x_test_valence = normalize(x_test_valence_nn)
 y_test_valence = test_valence.best_valance_testing.y_test'.';
 
 fprintf("Valence features loaded\n");
