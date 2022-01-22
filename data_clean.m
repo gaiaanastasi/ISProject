@@ -76,7 +76,6 @@ row_to_check = final_rows;
 for k = 1:rep
     for i = 1:row_to_check
         if (clean_dataset(i,1)==possible_values(min_arousal) && clean_dataset(i,2)~=possible_values(max_valence)) || (clean_dataset(i,1)~=possible_values(max_arousal) && clean_dataset(i,2)==possible_values(min_valence))
-            %fprintf(" %i) I am going to aumgent the following class valence:%f and arousal:%f\n",i, clean_dataset(i,2), clean_dataset(i,1));
             % Selection of i-th row
             selected_row = clean_dataset(i,:);
             % Augmentation of the i-th row
@@ -144,8 +143,7 @@ features_arousal = [zeros(1,54); 1:54]';
 counter_feat_sel_arousal = zeros(54,1)';
 for i = 1:sequentialfs_rep
     fprintf("Iteration %i\n", i);
-    %K-fold cross validation will be used to train and test the neural
-    %network that lies in the fun2 function
+    
     c = cvpartition(y_train_arousal, 'k', 10);
     option = statset('display','iter','useParallel',true);
     [features_selected_for_arousal, ~]  = sequentialfs(@myfun, x_train, y_train_arousal, 'cv', c, 'opt', option, 'nFeatures', 5);
@@ -191,7 +189,7 @@ features_valence = [zeros(1,54); 1:54]';
 
 for i = 1:sequentialfs_rep
     fprintf("Iteration %i\n", i);
-    %K-fold cross validation will be used to train and test the neural
+    
     c = cvpartition(y_train_valence, 'k', 10);
     option = statset('display','iter','useParallel',true);
     inmodel = sequentialfs(@myfun, x_train, y_train_valence, 'cv', c, 'opt', option, 'nFeatures', 5);
@@ -248,7 +246,6 @@ fprintf("Best-3 arousal features saved\n");
 
 %% Function for sequentialfs
 function err = myfun(x_train, t_train, x_test, t_test)
-    %~1000 samples for training
     net = fitnet(40);
     %net.trainParam.showWindow=0;
     %net.trainParam.showCommandLine=1;
