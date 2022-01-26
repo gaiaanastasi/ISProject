@@ -1,2 +1,2 @@
 # ISProject
-Intelligent System Project
+Intelligent Systems Project
